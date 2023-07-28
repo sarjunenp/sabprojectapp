@@ -30,14 +30,15 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const history = useHistory();
+  
 
   useEffect(() => {
     if (orderDetails.token) {
       checkout(orderDetails);
-      //clearCart();
-      //history.push("/");
+      clearCart();
+      history.push("/");
     }
-  }, [orderDetails]);
+  }, [orderDetails, checkout, clearCart, history]);
 
   // Handle real-time validation errors from the card Element.
   const handleChange = (event) => {

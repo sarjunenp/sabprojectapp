@@ -240,6 +240,10 @@ export const listBooks = /* GraphQL */ `
         author
         featured
         price
+        orders {
+          nextToken
+          __typename
+        }
         createdAt
         updatedAt
         __typename

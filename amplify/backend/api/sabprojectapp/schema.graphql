@@ -22,8 +22,6 @@ type Book
 
 type BookOrder
   @model(queries: null, subscriptions: null)
-  
-  @key(name: "byOrder", fields: ["order_id", "book_id"])
   @auth(
     rules: [
       # allow admins to create bookorders for customers by using customer email in lambda

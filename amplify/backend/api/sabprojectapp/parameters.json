@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "sabprojectapp",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authsabprojectapp4af2ad01",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

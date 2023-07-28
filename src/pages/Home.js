@@ -7,7 +7,7 @@ import { BookContext } from "../context/books";
 const Home = () => {
     const { featured } = useContext(BookContext);
     if (!featured.length) {
-        return <h3>No Featured Books</h3>
+        return <h3>No Featured Products</h3>
     }
     return (
         <>
