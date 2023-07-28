@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { BookContext } from "../context/books";
 import { CartContext } from "../context/cart";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import emailjs from '@emailjs/browser';
 
 const CARD_ELEMENT_OPTIONS = {
   style: {
@@ -48,12 +49,28 @@ const CheckoutForm = () => {
       setError(null);
     }
   };
+  const [emailAddress, setEmailAddress] = useState('');
+  // const [message, setMessage] = useState('');
 
   // Handle form submission.
   const handleSubmit = async (event) => {
     event.preventDefault();
     const card = elements.getElement(CardElement);
     const result = await stripe.createToken(card);
+    const emailAdd = `${emailAddress}`;
+
+    var templateParams = {
+      reply_to: emailAdd
+    };
+   
+    emailjs.send('service_23zawt4', 'template_toq7i57', templateParams, 'r6zCBUK-8UTZop1V1')
+        .then(function(response) {
+          console.log('SUCCESS!', response.status, response.text);
+        }, function(error) {
+          console.log('FAILED...', error);
+    });
+
+
     if (result.error) {
       // Inform the user if there was an error.
       setError(result.error.message);
@@ -74,6 +91,16 @@ const CheckoutForm = () => {
           type="text"
           onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })}
         />
+        <label>Email Address</label>
+        <input
+        type="text"
+        id="emailAddress"
+        name="emailAddress"
+        value={emailAddress}
+        onChange={(event) =>
+          setEmailAddress(event.target.value)
+        }
+      />
         <div className="stripe-section">
           <label htmlFor="stripe-element"> Credit or debit card </label>
           <CardElement id="stripe-element" options={CARD_ELEMENT_OPTIONS} onChange={handleChange} />
