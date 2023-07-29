@@ -50,6 +50,7 @@ const CheckoutForm = () => {
     }
   };
   const [emailAddress, setEmailAddress] = useState('');
+  const [sendAddress, setSendAddress] = useState('');
   // const [message, setMessage] = useState('');
 
   // Handle form submission.
@@ -58,9 +59,11 @@ const CheckoutForm = () => {
     const card = elements.getElement(CardElement);
     const result = await stripe.createToken(card);
     const emailAdd = `${emailAddress}`;
+    const sendAdd = `${sendAddress}`;
 
     var templateParams = {
-      reply_to: emailAdd
+      reply_to: emailAdd,
+      send_address: sendAdd
     };
    
     emailjs.send('service_23zawt4', 'template_toq7i57', templateParams, 'r6zCBUK-8UTZop1V1')
@@ -85,11 +88,22 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="checkout-form">
-        <label htmlFor="checkout-address">Shipping Address</label>
+        <label htmlFor="checkout-address">Billing Address</label>
         <input
           id="checkout-address"
+          name="checkout-address"
           type="text"
           onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })}
+        />
+        <label>Delivery Address</label>
+        <input
+        type="text"
+        id="sendAddress"
+        name="sendAddress"
+        value={sendAddress}
+        onChange={(event) =>
+          setSendAddress(event.target.value)
+        }
         />
         <label>Email Address</label>
         <input
@@ -100,7 +114,7 @@ const CheckoutForm = () => {
         onChange={(event) =>
           setEmailAddress(event.target.value)
         }
-      />
+        />
         <div className="stripe-section">
           <label htmlFor="stripe-element"> Credit or debit card </label>
           <CardElement id="stripe-element" options={CARD_ELEMENT_OPTIONS} onChange={handleChange} />
